@@ -1,13 +1,11 @@
-import "./style.sass";
 import Header from "../../components/Header";
+import Content from "../../components/Content";
 
 const App = () => {
   return (
-    <main className="main">
+    <main>
       <Header />
-      <div className="content">
-        <div className="inner">content</div>
-      </div>
+      <Content />
     </main>
   );
 };
