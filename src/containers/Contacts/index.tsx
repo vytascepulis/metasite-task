@@ -1,7 +1,7 @@
-import Table from "../Table";
+import Table from "../../components/Table";
 import jsonData from "./data.json";
 import "./style.sass";
-import { Column } from "../Table/types.ts";
+import { Column } from "../../components/Table/types.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
@@ -44,14 +44,11 @@ const columns: Column[] = [
   },
 ];
 
-const Content = () => {
-  const [state, setState] = useState(jsonData.data);
+const Contacts = () => {
+  const [state] = useState(jsonData.data);
 
   return (
     <div className="content">
-      <button type="button" onClick={() => setState([jsonData.data[0]])}>
-        click
-      </button>
       <div className="inner">
         <Table columns={columns} data={state} />
       </div>
@@ -59,4 +56,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default Contacts;

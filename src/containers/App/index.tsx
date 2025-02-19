@@ -1,11 +1,13 @@
-import Header from "../../components/Header";
-import Content from "../../components/Content";
+import Header from "../Header";
+import Contacts from "../Contacts";
+import FilterBar from "../FilterBar";
 
 const App = () => {
   return (
     <main>
       <Header />
-      <Content />
+      <FilterBar />
+      <Contacts />
     </main>
   );
 };

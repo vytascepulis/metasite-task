@@ -1,0 +1,43 @@
+@import '../../styles/imports'
+
+.inputWrapper
+  position: relative
+  color: $white
+  font-family: Roboto, sans-serif
+
+  .input
+    border: 2px solid $alphaWhite50
+    background: transparent
+    padding: 10px 15px
+    outline: none
+    border-radius: $borderRadiusS
+    color: $white
+    transition: border-color .3s ease-in-out
+
+    &:hover
+      border-color: $alphaWhite80
+
+      & + .label
+        color: $alphaWhite80
+
+    &:focus, &.isFilled
+      border-color: $alphaWhite80
+
+      & + .label
+        left: 15px
+        top: 0
+        color: $alphaWhite80
+        padding: 0 5px
+        font-size: 10px
+
+  .label
+    font-size: 12px
+    position: absolute
+    background: $blue800
+    top: 50%
+    left: 15px
+    transform: translateY(-50%)
+    padding: 0
+    color: $alphaWhite50
+    pointer-events: none
+    transition: all .3s ease-in-out
