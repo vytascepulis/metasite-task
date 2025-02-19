@@ -16,8 +16,40 @@
     text-align: left
     color: $white
 
-  .col
+    svg
+      color: $white !important
+
+  .cell
     padding: 16px
+    position: relative
+
+    &:not(:first-child)
+
+      &:before
+        content: "|"
+        display: block
+        position: absolute
+        z-index: 999
+        left: -2px
+        top: 50%
+        transform: translateY(-50%)
+        color: rgba($blue100, 0.15)
+
+      &.header:before
+        color: $white
+
+    button
+      background: transparent
+      border: none
+      padding: 0
+      color: $white
+      cursor: pointer
+      display: flex
+      align-items: center
+      gap: 5px
+
+    svg
+      color: $alphaBlack54
 
   .row
     box-shadow: inset 0px -1px 0px 0px $alphaBlack12
