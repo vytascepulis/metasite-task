@@ -3,6 +3,8 @@ import { Column, SortOptions } from "./types.ts";
 import { useEffect, useState } from "react";
 import { getCellValue, getNextSortOptions, getSortIcon } from "./utils.tsx";
 import classNames from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   columns: Column[];
@@ -52,14 +54,28 @@ const Table = ({ columns, data }: Props) => {
               style={column.style}
             >
               {column.isSortable && (
-                <button onClick={() => handleSort(column)}>
+                <button
+                  className={style.sortButton}
+                  onClick={() => handleSort(column)}
+                >
                   {column.label}
                   {sort?.columnId === column.id && getSortIcon(sort)}
                 </button>
               )}
-              {!column.isSortable && column.label}
+              {!column.isSortable && <span>{column.label}</span>}
             </th>
           ))}
+          <th
+            className={classNames(
+              style.buttonWrapper,
+              style.cell,
+              style.header,
+            )}
+          >
+            <button type="button">
+              <FontAwesomeIcon icon={faBars} size="lg" />
+            </button>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -70,6 +86,7 @@ const Table = ({ columns, data }: Props) => {
                 {column.render?.(row) ?? row[column.id]}
               </td>
             ))}
+            <td></td>
           </tr>
         ))}
       </tbody>
