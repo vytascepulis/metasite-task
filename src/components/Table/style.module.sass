@@ -59,16 +59,20 @@
     svg
       color: $alphaBlack54
 
-  .row
-    box-shadow: inset 0px -1px 0px 0px $alphaBlack12
-    transition: background .2s ease-in-out
+  tbody
+    .row
+      box-shadow: inset 0px -1px 0px 0px $alphaBlack12
+      transition: background .2s ease-in-out
+      cursor: pointer
 
-    &:hover
-      background: rgba($blue500, 0.1)
+      &:hover
+        background: rgba($blue500, 0.1)
 
+  // ManageColsBtn
   .buttonWrapper
     width: 50px
     padding: 0
+    position: relative
 
     button
       border: none
@@ -84,7 +88,32 @@
       svg
         transition: color .2s ease-in-out
 
-      &:hover
+      &:hover, &.isActive
         background: $white
         svg
           color: $blue500 !important
+
+  .manageColsWrapper
+    @include box-shadow
+    background: $white
+    position: absolute
+    right: 0
+    z-index: 10
+    margin: 0
+    padding: 0
+    list-style-type: none
+    min-width: 150px
+
+    li
+      color: $alphaBlack87
+
+      label
+        display: flex
+        gap: 5px
+        align-items: center
+        padding: 13px
+        cursor: pointer
+        border-top: 1px solid $alphaBlack12
+
+        &:hover
+          background: rgba($blue500, 0.05)

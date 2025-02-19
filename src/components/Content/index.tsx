@@ -11,12 +11,14 @@ const columns: Column[] = [
     id: "name",
     label: "Name",
     isSortable: true,
+    isHideable: true,
     render: (row) => `${row.name} ${row.surname[0]!}.`,
   },
   {
     id: "city",
     label: "City",
     isSortable: true,
+    isHideable: true,
   },
   {
     id: "activity",
@@ -30,6 +32,7 @@ const columns: Column[] = [
   {
     id: "email",
     label: "Email",
+    isHideable: true,
   },
   {
     id: "phone",
@@ -37,6 +40,7 @@ const columns: Column[] = [
     style: {
       textAlign: "right",
     },
+    isHideable: true,
   },
 ];
 

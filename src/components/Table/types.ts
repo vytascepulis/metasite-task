@@ -2,8 +2,13 @@ export interface Column {
   id: string;
   label: React.ReactNode;
   isSortable?: boolean;
+  isHideable?: boolean;
   render?: (data: Row) => React.ReactNode;
   style?: React.CSSProperties;
+}
+
+export interface ColumnData extends Column {
+  isHidden: boolean;
 }
 
 export interface Row {

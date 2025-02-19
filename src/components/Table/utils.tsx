@@ -1,4 +1,4 @@
-import { Column, Row, SortOptions } from "./types.ts";
+import { Column, ColumnData, Row, SortOptions } from "./types.ts";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -35,4 +35,12 @@ export const getSortIcon = (sortOptions: NonNullable<SortOptions>) => {
 
 export const getCellValue = (row: Row, column: Column): React.ReactNode => {
   return column.render ? column.render(row) : row[column.id];
+};
+
+export const initColumnsData = (columns: Column[]): ColumnData[] => {
+  return columns.map((col) => ({ ...col, isHidden: false }));
+};
+
+export const getShownCols = (columns: ColumnData[]) => {
+  return [...columns].filter((col) => !col.isHidden);
 };

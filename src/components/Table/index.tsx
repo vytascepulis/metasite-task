@@ -1,19 +1,29 @@
 import style from "./style.module.sass";
-import { Column, SortOptions } from "./types.ts";
+import { Column, ColumnData, Row, SortOptions } from "./types.ts";
 import { useEffect, useState } from "react";
-import { getCellValue, getNextSortOptions, getSortIcon } from "./utils.tsx";
+import {
+  getCellValue,
+  getNextSortOptions,
+  getShownCols,
+  getSortIcon,
+  initColumnsData,
+} from "./utils.tsx";
 import classNames from "classnames";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import ManageColsBtn from "./ManageColsBtn.tsx";
 
 interface Props {
   columns: Column[];
-  data: any[];
+  data: Row[];
 }
 
 const Table = ({ columns, data }: Props) => {
   const [tableData, setTableData] = useState(data);
+  const [columnsData, setColumnsData] = useState<ColumnData[]>(
+    initColumnsData(columns),
+  );
   const [sort, setSort] = useState<SortOptions>(null);
+
+  const isHideableCols = Boolean(columns.find((c) => c.isHideable));
 
   const handleSort = (column: Column) => {
     let copiedData = [...tableData];
@@ -47,7 +57,7 @@ const Table = ({ columns, data }: Props) => {
     <table className={style.tableWrapper}>
       <thead>
         <tr className={style.row}>
-          {columns.map((column) => (
+          {getShownCols(columnsData).map((column) => (
             <th
               key={column.id}
               className={classNames(style.cell, style.header)}
@@ -65,28 +75,23 @@ const Table = ({ columns, data }: Props) => {
               {!column.isSortable && <span>{column.label}</span>}
             </th>
           ))}
-          <th
-            className={classNames(
-              style.buttonWrapper,
-              style.cell,
-              style.header,
-            )}
-          >
-            <button type="button">
-              <FontAwesomeIcon icon={faBars} size="lg" />
-            </button>
-          </th>
+          {isHideableCols && (
+            <ManageColsBtn
+              columnsData={columnsData}
+              setColumnsData={setColumnsData}
+            />
+          )}
         </tr>
       </thead>
       <tbody>
         {tableData.map((row) => (
           <tr key={row.id} className={style.row}>
-            {columns.map((column) => (
+            {getShownCols(columnsData).map((column) => (
               <td key={column.id} className={style.cell} style={column.style}>
                 {column.render?.(row) ?? row[column.id]}
               </td>
             ))}
-            <td></td>
+            {isHideableCols && <td></td>}
           </tr>
         ))}
       </tbody>
