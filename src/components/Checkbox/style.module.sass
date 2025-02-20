@@ -1,0 +1,45 @@
+@import '../../styles/imports'
+
+.checkboxWrapper
+  display: flex
+  align-items: center
+  gap: 5px
+  user-select: none
+  cursor: pointer
+
+  .customCheckbox
+    width: 20px
+    height: 20px
+    background: transparent
+    transition: all .2s ease-in-out
+    border: 2px solid $green
+    border-radius: $borderRadiusS
+    box-sizing: border-box
+    position: relative
+    cursor: pointer
+
+  input
+    display: none
+
+    &:checked ~ .customCheckbox
+      background: $green
+
+      &:after
+        content: ""
+        width: 8px
+        height: 3px
+        background: $white
+        position: absolute
+        transform: rotate(45deg)
+        top: 8px
+
+      &:before
+        content: ""
+        width: 12px
+        height: 3px
+        background: $white
+        position: absolute
+        transform: rotate(-45deg)
+        top: 5px
+        left: 5px
+

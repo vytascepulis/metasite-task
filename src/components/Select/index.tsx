@@ -14,7 +14,7 @@ interface Props {
 
 const Select = ({ label, options, onSelect }: Props) => {
   const [value, setValue] = useState<Option | null>(null);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState("");
 
   const refSelectWrapper = useRef<HTMLDivElement | null>(null);

@@ -2,6 +2,7 @@ import style from "./style.module.sass";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 import jsonData from "../Contacts/data.json";
+import Checkbox from "../../components/Checkbox";
 
 const FilterBar = () => {
   const cities = Array.from(new Set(jsonData.data.map((d) => d.city)));
@@ -17,6 +18,12 @@ const FilterBar = () => {
           label="City"
           options={data}
           onSelect={(val) => console.log("select: ", val)}
+        />
+        <Checkbox
+          name="showActive"
+          label="Show active"
+          onChecked={(val) => console.log("checked: ", val)}
+          initialValue={true}
         />
       </div>
     </div>

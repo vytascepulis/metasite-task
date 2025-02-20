@@ -11,7 +11,7 @@
     top: 50%
     transform: translateY(-50%)
     opacity: 0.5
-    transition: opacity .3s ease-in-out
+    transition: all .3s ease-in-out
     pointer-events: none
 
   .input
@@ -36,11 +36,12 @@
       & ~ svg
         opacity: 1
 
-    &:focus, &.isFilled
+    &:focus, &.isFilled, &.isOpen
       border-color: $alphaWhite80
 
       & ~ svg
         opacity: 1
+        transform: rotate(180deg) translateY(50%)
 
       & ~ .label
         left: 15px
@@ -51,7 +52,7 @@
 
     &.isFilled
       & ~ svg
-        opacity: 0
+        display: none
 
   .label
     font-size: 12px
