@@ -9,7 +9,7 @@ import useClickOutside from "../../hooks/useClickOutside.ts";
 interface Props {
   label: string;
   options: Option[];
-  onSelect: (value: Option) => void;
+  onSelect: (value: Option | null) => void;
 }
 
 const Select = ({ label, options, onSelect }: Props) => {
@@ -32,13 +32,21 @@ const Select = ({ label, options, onSelect }: Props) => {
   const onTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const val = event.target.value;
     setText(val);
+
+    if (!val) {
+      setValue(null);
+      onSelect(null);
+    }
   };
 
   const onOptionSelect = (option: Option) => {
     setValue(option);
     setText(option.label);
     setIsOpen(false);
-    onSelect(option);
+
+    if (option.value !== value?.value) {
+      onSelect(option);
+    }
   };
 
   const filteredOptions = options.filter((o) =>
