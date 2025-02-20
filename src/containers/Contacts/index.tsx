@@ -1,10 +1,12 @@
 import Table from "../../components/Table";
 import jsonData from "./data.json";
-import "./style.sass";
+import style from "./style.module.sass";
 import { Column } from "../../components/Table/types.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import ContactInfo from "../../components/ContactInfo";
+import FilterBar from "../FilterBar";
 
 const columns: Column[] = [
   {
@@ -49,9 +51,11 @@ const Contacts = () => {
   const [state] = useState(jsonData.data);
 
   return (
-    <div className="content">
-      <div className="inner">
+    <div className={style.content}>
+      <FilterBar />
+      <div className={style.contactsInner}>
         <Table columns={columns} data={state} />
+        <ContactInfo />
       </div>
     </div>
   );
