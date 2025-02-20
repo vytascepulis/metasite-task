@@ -1,0 +1,21 @@
+@import '../../styles/imports'
+
+.button
+  @include box-shadow
+  border: none
+  padding: 8px 16px
+  background: $green
+  color: $alphaBlack87
+  text-transform: uppercase
+  font-family: Roboto, sans-serif
+  font-weight: 500
+  border-radius: $borderRadiusS
+  cursor: pointer
+  font-size: 14px
+  transition: background .2s ease-in-out
+
+  &:hover
+    background: darken($green, 5%)
+
+  &:active
+    background: darken($green, 13%)

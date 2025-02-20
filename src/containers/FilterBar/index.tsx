@@ -5,6 +5,7 @@ import jsonData from "../Contacts/data.json";
 import Checkbox from "../../components/Checkbox";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "../../components/Button";
 
 const FilterBar = () => {
   const cities = Array.from(new Set(jsonData.data.map((d) => d.city)));
@@ -31,6 +32,12 @@ const FilterBar = () => {
           onChecked={(val) => console.log("checked: ", val)}
           initialValue={true}
         />
+        <Button
+          className={style.filterButton}
+          onClick={() => console.log("filter click")}
+        >
+          Filter
+        </Button>
       </div>
     </div>
   );
