@@ -1,9 +1,18 @@
 @import '../../styles/imports'
 
-.inputWrapper
+.selectWrapper
   position: relative
   color: $white
   font-family: Roboto, sans-serif
+
+  svg
+    position: absolute
+    right: 15px
+    top: 50%
+    transform: translateY(-50%)
+    opacity: 0.5
+    transition: opacity .3s ease-in-out
+    pointer-events: none
 
   .input
     border: 2px solid $alphaWhite50
@@ -14,14 +23,24 @@
     color: $white
     transition: border-color .3s ease-in-out
 
+    &.isOpen
+      border-bottom: none
+      border-radius: $borderRadiusS $borderRadiusS 0 0
+
     &:hover
       border-color: $alphaWhite80
 
       & ~ .label
         color: $alphaWhite80
 
+      & ~ svg
+        opacity: 1
+
     &:focus, &.isFilled
       border-color: $alphaWhite80
+
+      & ~ svg
+        opacity: 1
 
       & ~ .label
         left: 15px
@@ -29,6 +48,10 @@
         color: $alphaWhite80
         padding: 0 5px
         font-size: 10px
+
+    &.isFilled
+      & ~ svg
+        opacity: 0
 
   .label
     font-size: 12px
@@ -41,3 +64,15 @@
     color: $alphaWhite50
     pointer-events: none
     transition: all .3s ease-in-out
+
+  .optionsWrapper
+    @include box-shadow
+    background: $blue800
+    position: absolute
+    width: 100%
+    height: 300px
+    z-index: 10
+    border: 2px solid $alphaWhite80
+    border-top: none
+    border-radius: 0 0 $borderRadiusS $borderRadiusS
+    box-sizing: border-box
