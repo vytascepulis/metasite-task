@@ -22,12 +22,13 @@ const columns: Column[] = [
   },
   {
     id: "activity",
-    label: <FontAwesomeIcon icon={faEye} />,
+    label: <FontAwesomeIcon icon={faEye} size="lg" />,
     style: {
       width: 50,
       textAlign: "center",
     },
-    render: (row) => (row.isActive ? <FontAwesomeIcon icon={faEye} /> : null),
+    render: (row) =>
+      row.isActive ? <FontAwesomeIcon icon={faEye} size="lg" /> : null,
   },
   {
     id: "email",

@@ -3,6 +3,8 @@ import Input from "../../components/Input";
 import Select from "../../components/Select";
 import jsonData from "../Contacts/data.json";
 import Checkbox from "../../components/Checkbox";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const FilterBar = () => {
   const cities = Array.from(new Set(jsonData.data.map((d) => d.city)));
@@ -21,7 +23,11 @@ const FilterBar = () => {
         />
         <Checkbox
           name="showActive"
-          label="Show active"
+          label={
+            <span className={style.showActiveLabel}>
+              Show active <FontAwesomeIcon icon={faEye} size="lg" />
+            </span>
+          }
           onChecked={(val) => console.log("checked: ", val)}
           initialValue={true}
         />
