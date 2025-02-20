@@ -1,6 +1,8 @@
 import style from "./style.module.sass";
 import { useState } from "react";
 import classNames from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   label: string;
@@ -16,6 +18,11 @@ const Input = ({ label, onChange }: Props) => {
     setValue(val);
   };
 
+  const handleClearValue = () => {
+    setValue("");
+    onChange("");
+  };
+
   return (
     <div className={style.inputWrapper}>
       <input
@@ -25,6 +32,11 @@ const Input = ({ label, onChange }: Props) => {
         value={value}
       />
       <span className={style.label}>{label}</span>
+      {value && (
+        <button className={style.clearIcon} onClick={handleClearValue}>
+          <FontAwesomeIcon icon={faXmark} />
+        </button>
+      )}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { Option } from "./types.ts";
 import { useRef, useState } from "react";
 import style from "./style.module.sass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faXmark } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import useClickOutside from "../../hooks/useClickOutside.ts";
 
@@ -49,6 +49,12 @@ const Select = ({ label, options, onSelect }: Props) => {
     }
   };
 
+  const handleClearValue = () => {
+    setValue(null);
+    setText("");
+    onSelect(null);
+  };
+
   const filteredOptions = options.filter((o) =>
     o.label.toLowerCase().startsWith(text.toLowerCase()),
   );
@@ -66,7 +72,16 @@ const Select = ({ label, options, onSelect }: Props) => {
         onFocus={() => setIsOpen(true)}
       />
       <span className={style.label}>{label}</span>
-      <FontAwesomeIcon icon={faCaretDown} size="sm" />
+      <FontAwesomeIcon
+        icon={faCaretDown}
+        size="sm"
+        className={style.caretSvg}
+      />
+      {value && (
+        <button className={style.clearIcon} onClick={handleClearValue}>
+          <FontAwesomeIcon icon={faXmark} />
+        </button>
+      )}
       {isOpen && (
         <div className={style.optionsWrapper}>
           {filteredOptions.map((option) => (

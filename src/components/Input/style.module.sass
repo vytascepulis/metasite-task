@@ -5,6 +5,21 @@
   color: $white
   font-family: Roboto, sans-serif
 
+  .clearIcon
+    position: absolute
+    right: 8px
+    top: 50%
+    transform: translateY(-50%)
+    border: none
+    background: transparent
+    cursor: pointer
+    color: $white
+    opacity: .5
+    transition: opacity .2s ease-in-out
+
+    &:hover
+      opacity: 1
+
   .input
     border: 2px solid $alphaWhite50
     background: transparent
@@ -13,6 +28,8 @@
     border-radius: $borderRadiusS
     color: $white
     transition: border-color .3s ease-in-out
+    width: 200px
+    box-sizing: border-box
 
     &:hover
       border-color: $alphaWhite80
