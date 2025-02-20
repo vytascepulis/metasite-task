@@ -5,6 +5,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { Column, ColumnData } from "./types.ts";
 import useClickOutside from "../../hooks/useClickOutside.ts";
+import Checkbox from "../Checkbox";
 
 interface Props {
   columnsData: ColumnData[];
@@ -53,14 +54,12 @@ const ManageColsBtn = ({ columnsData, setColumnsData }: Props) => {
         <ul className={style.manageColsWrapper}>
           {hideableCols.map((col) => (
             <li key={col.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={!col.isHidden}
-                  onChange={() => toggleColVisibility(col)}
-                />
-                {col.label}
-              </label>
+              <Checkbox
+                name={col.id}
+                label={col.label}
+                onChecked={() => toggleColVisibility(col)}
+                initialValue={!col.isHidden}
+              />
             </li>
           ))}
         </ul>
