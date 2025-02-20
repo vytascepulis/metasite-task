@@ -2,8 +2,9 @@ import classNames from "classnames";
 import style from "./style.module.sass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Column, ColumnData } from "./types.ts";
+import useClickOutside from "../../hooks/useClickOutside.ts";
 
 interface Props {
   columnsData: ColumnData[];
@@ -11,9 +12,16 @@ interface Props {
 }
 
 const ManageColsBtn = ({ columnsData, setColumnsData }: Props) => {
-  const [isClicked, setIsClicked] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleIsClicked = () => setIsClicked((prevState) => !prevState);
+  const refManageColsWrapper = useRef<HTMLTableHeaderCellElement | null>(null);
+
+  useClickOutside({
+    element: refManageColsWrapper.current as HTMLElement,
+    callback: () => setIsOpen(false),
+  });
+
+  const toggleIsClicked = () => setIsOpen((prevState) => !prevState);
 
   const hideableCols = columnsData.filter((col) => col.isHideable);
 
@@ -30,15 +38,18 @@ const ManageColsBtn = ({ columnsData, setColumnsData }: Props) => {
   };
 
   return (
-    <th className={classNames(style.buttonWrapper, style.cell, style.header)}>
+    <th
+      ref={refManageColsWrapper}
+      className={classNames(style.buttonWrapper, style.cell, style.header)}
+    >
       <button
         onClick={toggleIsClicked}
-        className={classNames({ [style.isActive]: isClicked })}
+        className={classNames({ [style.isActive]: isOpen })}
         type="button"
       >
         <FontAwesomeIcon icon={faBars} size="lg" />
       </button>
-      {isClicked && (
+      {isOpen && (
         <ul className={style.manageColsWrapper}>
           {hideableCols.map((col) => (
             <li key={col.id}>

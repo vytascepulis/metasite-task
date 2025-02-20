@@ -1,15 +1,21 @@
 import style from "./style.module.sass";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
+import jsonData from "../Contacts/data.json";
 
 const FilterBar = () => {
+  const cities = Array.from(new Set(jsonData.data.map((d) => d.city)));
+  const data = cities.map((c) => ({
+    label: c,
+    value: c.toLowerCase().replaceAll(" ", "-"),
+  }));
   return (
     <div className={style.filterBarWrapper}>
       <div className={style.inner}>
         <Input label="Name" onChange={(val) => console.log(val)} />
         <Select
           label="City"
-          options={[{ value: "value", label: "Label" }]}
+          options={data}
           onSelect={(val) => console.log("select: ", val)}
         />
       </div>
