@@ -50,12 +50,14 @@ const columns: Column[] = [
 const Contacts = () => {
   const [state] = useState(jsonData.data);
 
+  const person = jsonData.data[0];
+
   return (
     <div className={style.content}>
       <FilterBar />
       <div className={style.contactsInner}>
         <Table columns={columns} data={state} />
-        <ContactInfo />
+        <ContactInfo contactId={person.id} />
       </div>
     </div>
   );
