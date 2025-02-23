@@ -1,10 +1,16 @@
-@import '../../styles/imports'
+@use '../../styles' as *
+@use 'sass:color'
 
 .checkboxWrapper
   display: flex
   align-items: center
   user-select: none
   cursor: pointer
+
+  &:hover
+    input:checked ~.customCheckbox
+      background: color.scale($green, $lightness: -10%)
+      border-color: color.scale($green, $lightness: -10%)
 
   .customCheckbox
     width: 20px

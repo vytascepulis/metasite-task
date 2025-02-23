@@ -1,4 +1,5 @@
-@import '../../styles/imports'
+@use '../../styles' as *
+@use 'sass:color'
 
 .button
   @include box-shadow
@@ -15,7 +16,7 @@
   transition: background .2s ease-in-out
 
   &:hover
-    background: darken($green, 5%)
+    background: color.scale($green, $lightness: -10%)
 
   &:active
-    background: darken($green, 13%)
+    background: color.scale($green, $lightness: -20%)

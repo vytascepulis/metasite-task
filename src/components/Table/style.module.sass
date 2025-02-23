@@ -1,4 +1,5 @@
-@import '../../styles/imports'
+@use '../../styles' as *
+@use 'sass:color'
 
 .tableWrapper
   @include box-shadow
@@ -23,7 +24,7 @@
     transition: background .2s ease-in-out
 
     &:hover
-      background: darken($blue500, 5%)
+      background: color.scale($blue500, $lightness: -10%)
 
   thead
     background: $blue500
