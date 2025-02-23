@@ -76,47 +76,81 @@
       &.isSelected
         background: rgba($blue500, 0.13)
 
-  // ManageColsBtn
-  .buttonWrapper
-    width: 50px
-    padding: 0
-    position: relative
+    td.noData
+      text-align: center
+      font-size: 24px
+      font-weight: bold
+      padding: 20px
+      color: $alphaBlack54
 
-    button
-      border: none
-      background: transparent
-      width: 100%
-      height: 100%
-      display: flex
-      align-items: center
-      justify-content: center
-      transition: background .2s ease-in-out
-      cursor: pointer
 
+// ManageColsBtn
+
+.buttonWrapper
+  width: 50px
+  padding: 0
+  position: relative
+
+  button
+    border: none
+    background: transparent
+    width: 100%
+    height: 100%
+    display: flex
+    align-items: center
+    justify-content: center
+    transition: background .2s ease-in-out
+    cursor: pointer
+
+    svg
+      transition: color .2s ease-in-out
+
+    &:hover, &.isActive
+      background: $white
       svg
-        transition: color .2s ease-in-out
+        color: $blue500 !important
 
-      &:hover, &.isActive
-        background: $white
-        svg
-          color: $blue500 !important
+.manageColsWrapper
+  @include box-shadow
+  background: $white
+  position: absolute
+  right: 0
+  z-index: 20
+  margin: 0
+  padding: 0
+  list-style-type: none
+  min-width: 150px
 
-  .manageColsWrapper
-    @include box-shadow
-    background: $white
-    position: absolute
-    right: 0
-    z-index: 20
-    margin: 0
-    padding: 0
-    list-style-type: none
-    min-width: 150px
+  li
+    color: $alphaBlack87
 
-    li
-      color: $alphaBlack87
+    & > label
+      padding: 13px
 
-      & > label
-        padding: 13px
+    &:hover
+      background: rgba($blue500, 0.05)
 
-      &:hover
-        background: rgba($blue500, 0.05)
+
+// TableBodySkeleton
+
+.skeletonRow
+  td
+    padding: 10px
+
+    .skeletonCell
+      display: block
+      width: 100%
+      height: 30px
+      background: $alphaBlack12
+      border-radius: $borderRadiusS
+      animation-name: skeletonAnimation
+      animation-duration: 1s
+      animation-direction: alternate
+      animation-iteration-count: infinite
+      animation-timing-function: ease-in-out
+
+@keyframes skeletonAnimation
+  from
+    background: $alphaBlack12
+  to
+    background: $alphaBlack25

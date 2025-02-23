@@ -37,10 +37,6 @@ const FilterBar = () => {
   const handleFilter = () => {
     let copiedRows = [...defaultRows];
 
-    if (filters.current.showActive) {
-      copiedRows = copiedRows.filter((r) => r.isActive);
-    }
-
     if (filters.current.city) {
       copiedRows = copiedRows.filter((r) =>
         r.city.toLowerCase().startsWith(filters.current.city),
@@ -51,6 +47,10 @@ const FilterBar = () => {
       copiedRows = copiedRows.filter((r) =>
         r.name.toLowerCase().startsWith(filters.current.name),
       );
+    }
+
+    if (filters.current.showActive) {
+      copiedRows = copiedRows.filter((r) => r.isActive);
     }
 
     updateRows(copiedRows);

@@ -9,7 +9,7 @@ import Checkbox from "components/Checkbox";
 
 interface Props<T> {
   columns: Column<T>[];
-  onColumnToggle: (column: Column<T>) => void;
+  onColumnToggle?: (column: Column<T>) => void;
 }
 
 const ManageColsBtn = <T,>({ columns, onColumnToggle }: Props<T>) => {
@@ -25,6 +25,10 @@ const ManageColsBtn = <T,>({ columns, onColumnToggle }: Props<T>) => {
   const toggleIsClicked = () => setIsOpen((prevState) => !prevState);
 
   const hideableCols = columns.filter((col) => col.isHideable);
+
+  if (!hideableCols.length || !onColumnToggle) {
+    return null;
+  }
 
   return (
     <th
