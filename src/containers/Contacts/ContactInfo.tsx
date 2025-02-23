@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Contact } from "contexts/ContactsContext/types.ts";
 import useFetch from "hooks/useFetch.ts";
 import { FormattedContact } from "containers/Contacts/types.ts";
+import ContactInfoSkeleton from "containers/Contacts/ContactInfoSkeleton.tsx";
 
 const ContactInfo = () => {
   const { selectedRow, onSelectRow } = useContacts();
@@ -26,12 +27,12 @@ const ContactInfo = () => {
     }
   }, [selectedRow]);
 
-  if (!contact) {
+  if (!selectedRow) {
     return null;
   }
 
-  if (isLoading) {
-    return <div className={style.contactInfoWrapper}>alo</div>;
+  if (isLoading || !contact) {
+    return <ContactInfoSkeleton />;
   }
 
   return (
