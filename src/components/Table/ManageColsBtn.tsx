@@ -8,11 +8,11 @@ import useClickOutside from "hooks/useClickOutside.ts";
 import Checkbox from "components/Checkbox";
 
 interface Props<T> {
-  columnsData: Column<T>[];
-  setColumnsData: React.Dispatch<React.SetStateAction<Column<T>[]>>;
+  columns: Column<T>[];
+  onColumnToggle: (column: Column<T>) => void;
 }
 
-const ManageColsBtn = <T,>({ columnsData, setColumnsData }: Props<T>) => {
+const ManageColsBtn = <T,>({ columns, onColumnToggle }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const refManageColsWrapper = useRef<HTMLTableHeaderCellElement | null>(null);
@@ -24,19 +24,7 @@ const ManageColsBtn = <T,>({ columnsData, setColumnsData }: Props<T>) => {
 
   const toggleIsClicked = () => setIsOpen((prevState) => !prevState);
 
-  const hideableCols = columnsData.filter((col) => col.isHideable);
-
-  const toggleColVisibility = <T,>(column: Column<T>) => {
-    setColumnsData((prevState) =>
-      prevState.map((col) => {
-        if (col.id === column.id) {
-          return { ...col, isHidden: !col.isHidden };
-        }
-
-        return col;
-      }),
-    );
-  };
+  const hideableCols = columns.filter((col) => col.isHideable);
 
   return (
     <th
@@ -57,8 +45,8 @@ const ManageColsBtn = <T,>({ columnsData, setColumnsData }: Props<T>) => {
               <Checkbox
                 name={col.id}
                 label={col.label}
-                onChecked={() => toggleColVisibility(col)}
-                initialValue={!col.isHidden}
+                onChecked={() => onColumnToggle(col)}
+                value={!col.isHidden}
               />
             </li>
           ))}

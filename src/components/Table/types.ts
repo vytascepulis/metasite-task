@@ -1,14 +1,12 @@
 export interface Column<T> {
   id: string;
   label: React.ReactNode;
+  render: (data: T) => React.ReactNode;
   isSortable?: boolean;
+  sortOrder?: SortOrder;
   isHideable?: boolean;
   isHidden?: boolean;
-  render?: (data: T) => React.ReactNode;
   style?: React.CSSProperties;
 }
 
-export type SortOptions<T> = {
-  columnId: Column<T>["id"];
-  sort: "asc" | "desc";
-};
+export type SortOrder = "asc" | "desc";

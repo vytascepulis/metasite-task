@@ -1,98 +1,64 @@
 import style from "./style.module.sass";
-import { Column, SortOptions } from "./types.ts";
-import { useEffect, useState } from "react";
-import {
-  getCellValue,
-  getNextSortOptions,
-  getShownCols,
-  getSortIcon,
-} from "./utils.tsx";
+import { Column } from "./types.ts";
+import { getShownCols, getSortIcon } from "./utils.tsx";
 import classNames from "classnames";
-import ManageColsBtn from "./ManageColsBtn.tsx";
+import ManageColsBtn from "components/Table/ManageColsBtn.tsx";
 
 interface Props<T> {
   columns: Column<T>[];
   data: T[];
   onSelectRow?: (row: T) => void;
-  initialSort: SortOptions<T> | null;
-  onSortChange?: (sort: SortOptions<T>) => void;
+  onSortChange?: (column: Column<T>) => void;
+  onColumnToggle?: (column: Column<T>) => void;
 }
 
-const Table = <T,>({ columns, data, onSelectRow, initialSort }: Props<T>) => {
-  const [tableData, setTableData] = useState(data);
-  const [columnsData, setColumnsData] = useState<Column<T>[]>(columns);
-  const [sort, setSort] = useState<SortOptions<T> | null>(initialSort);
-
+const Table = <T,>({
+  columns,
+  data,
+  onSelectRow,
+  onSortChange,
+  onColumnToggle,
+}: Props<T>) => {
   const isHideableCols = Boolean(columns.find((c) => c.isHideable));
-
-  const handleSort = (column: Column<T>) => {
-    let copiedData = [...tableData];
-    const currentSort = getNextSortOptions(column, sort);
-
-    if (!currentSort) {
-      copiedData = data;
-    }
-
-    if (currentSort?.sort === "desc") {
-      copiedData.sort((a, b) =>
-        getCellValue<T>(a, column)! < getCellValue(b, column)! ? -1 : 1,
-      );
-    }
-
-    if (currentSort?.sort === "asc") {
-      copiedData.sort((a, b) =>
-        getCellValue(a, column)! > getCellValue(b, column)! ? -1 : 1,
-      );
-    }
-
-    setSort(currentSort);
-    setTableData(copiedData);
-  };
-
-  useEffect(() => {
-    setTableData(data);
-  }, [data]);
 
   return (
     <table className={style.tableWrapper}>
       <thead>
         <tr className={style.row}>
-          {getShownCols(columnsData).map((column) => (
+          {getShownCols(columns).map((column) => (
             <th
               key={column.id}
               className={classNames(style.cell, style.header)}
               style={column.style}
             >
-              {column.isSortable && (
+              {column.isSortable && onSortChange && (
                 <button
                   className={style.sortButton}
-                  onClick={() => handleSort(column)}
+                  onClick={() => onSortChange?.(column)}
                 >
                   {column.label}
-                  {sort?.columnId === column.id && getSortIcon(sort)}
+                  {getSortIcon(column.sortOrder)}
                 </button>
               )}
               {!column.isSortable && <span>{column.label}</span>}
             </th>
           ))}
-          {isHideableCols && (
-            <ManageColsBtn
-              columnsData={columnsData}
-              setColumnsData={setColumnsData}
-            />
+          {isHideableCols && onColumnToggle && (
+            <ManageColsBtn columns={columns} onColumnToggle={onColumnToggle} />
           )}
         </tr>
       </thead>
       <tbody>
-        {tableData.map((row, idx) => (
+        {data.map((row, idx) => (
           <tr
-            key={typeof row.id === "string" ? row.id : idx}
+            // key={typeof row.id === "string" ? row.id : idx}
+            key={idx}
             className={style.row}
             onClick={() => onSelectRow?.(row)}
           >
-            {getShownCols(columnsData).map((column) => (
+            {getShownCols(columns).map((column) => (
               <td key={column.id} className={style.cell} style={column.style}>
-                {column.render?.(row) ?? row[column.id]}
+                {column.render?.(row)}
               </td>
             ))}
             {isHideableCols && <td></td>}

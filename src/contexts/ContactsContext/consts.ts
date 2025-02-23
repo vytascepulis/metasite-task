@@ -4,6 +4,9 @@ import { createContext, useContext } from "react";
 export const initialContextValue: ContactsContextInterface = {
   rows: [],
   selectedRow: null,
+  onSelectRow: () => {},
+  updateRows: () => {},
+  resetRows: () => {},
 };
 
 export const ContactsContext =

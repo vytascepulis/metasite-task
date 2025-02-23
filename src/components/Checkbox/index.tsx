@@ -6,9 +6,10 @@ interface Props {
   name: string;
   onChecked: (checked: boolean) => void;
   initialValue?: boolean;
+  value?: boolean;
 }
 
-const Checkbox = ({ label, name, onChecked, initialValue }: Props) => {
+const Checkbox = ({ label, name, onChecked, initialValue, value }: Props) => {
   const [isChecked, setIsChecked] = useState(Boolean(initialValue));
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +22,7 @@ const Checkbox = ({ label, name, onChecked, initialValue }: Props) => {
     <label className={style.checkboxWrapper}>
       <input
         type="checkbox"
-        checked={isChecked}
+        checked={value ?? isChecked}
         onChange={handleOnChange}
         id={name}
       />
