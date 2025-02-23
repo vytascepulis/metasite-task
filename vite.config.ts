@@ -9,10 +9,13 @@ export default defineConfig({
     tsConfigPaths(),
     react(),
     checker({
-      typescript: true,
-      // eslint: {
-      //   lintCommand: "eslint .",
-      // },
+      typescript: {
+        tsconfigPath: "./tsconfig.app.json",
+      },
+      eslint: {
+        lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+        useFlatConfig: true,
+      },
     }),
   ],
 });

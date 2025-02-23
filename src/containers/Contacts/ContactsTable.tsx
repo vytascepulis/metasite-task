@@ -2,7 +2,7 @@ import Table from "components/Table";
 import { Column } from "components/Table/types.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { useContacts } from "contexts/ContactsContext";
+import { useContacts } from "contexts/ContactsContext/consts";
 
 const columns: Column[] = [
   {

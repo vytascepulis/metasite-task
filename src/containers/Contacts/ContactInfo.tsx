@@ -1,6 +1,6 @@
 import style from "./style.module.sass";
 import { mockContactImage } from "./utils.ts";
-import { useContacts } from "contexts/ContactsContext";
+import { useContacts } from "contexts/ContactsContext/consts";
 
 const ContactInfo = () => {
   const { selectedRow, rows } = useContacts();

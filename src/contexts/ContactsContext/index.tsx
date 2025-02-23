@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from "react";
-import { Contact, ContactsContextInterface } from "./types.ts";
-import { initialContextValue } from "./consts.ts";
+import { useState } from "react";
+import { Contact } from "./types.ts";
+import { ContactsContext } from "./consts.ts";
 import jsonData from "./data.json";
 
 interface Props {
@@ -11,9 +11,6 @@ interface State {
   rows: Contact[];
   selectedRow: null;
 }
-
-const ContactsContext =
-  createContext<ContactsContextInterface>(initialContextValue);
 
 export const ContactsProvider = ({ children }: Props) => {
   const [state] = useState<State>({
@@ -30,5 +27,3 @@ export const ContactsProvider = ({ children }: Props) => {
     </ContactsContext.Provider>
   );
 };
-
-export const useContacts = () => useContext(ContactsContext);
