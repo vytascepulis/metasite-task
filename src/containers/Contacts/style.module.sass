@@ -1,4 +1,5 @@
 @use '../../styles' as *
+@use 'sass:color'
 
 .content
   margin-bottom: 35px
@@ -49,3 +50,22 @@
     a
       color: $blue500
       text-decoration: underline
+
+  .clearIcon
+    width: 20px
+    height: 20px
+    border: none
+    display: flex
+    align-items: center
+    justify-content: center
+    background: color.scale($blue500, $lightness: 50%)
+    color: $white
+    cursor: pointer
+    transition: background .2s ease-in-out
+    position: absolute
+    right: 5px
+    top: 5px
+    border-radius: $borderRadiusS
+
+    &:hover
+      background: color.scale($blue500, $lightness: 20%)

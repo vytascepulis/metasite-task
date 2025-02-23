@@ -9,19 +9,19 @@ interface Props {
 
 interface State {
   rows: Contact[];
-  selectedRow: Contact | null;
+  selectedRow?: Contact;
 }
 
 export const ContactsProvider = ({ children }: Props) => {
   const [state, setState] = useState<State>({
     rows: jsonData.data,
     // rows: [],
-    selectedRow: null,
+    selectedRow: undefined,
   });
 
   const refRows = useRef<Contact[]>(jsonData.data);
 
-  const onSelectRow = (selectedRow: Contact | null) => {
+  const onSelectRow = (selectedRow?: Contact) => {
     setState((prevState) => ({ ...prevState, selectedRow }));
   };
 

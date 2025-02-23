@@ -1,9 +1,11 @@
 import style from "./style.module.sass";
 import { mockContactImage } from "./utils.ts";
 import { useContacts } from "contexts/ContactsContext/consts";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const ContactInfo = () => {
-  const { selectedRow, rows } = useContacts();
+  const { selectedRow, rows, onSelectRow } = useContacts();
 
   const person = rows.find((c) => c.id === selectedRow?.id);
   const formattedPerson = mockContactImage(person);
@@ -14,6 +16,9 @@ const ContactInfo = () => {
 
   return (
     <div className={style.contactInfoWrapper}>
+      <button className={style.clearIcon} onClick={() => onSelectRow()}>
+        <FontAwesomeIcon icon={faXmark} />
+      </button>
       <div className={style.pictureWrapper}>
         <img src={formattedPerson.image} alt={formattedPerson.fullName} />
       </div>

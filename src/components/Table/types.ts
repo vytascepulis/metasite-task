@@ -10,3 +10,5 @@ export interface Column<T> {
 }
 
 export type SortOrder = "asc" | "desc";
+
+export type Row<T> = T & { id: string };

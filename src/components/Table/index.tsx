@@ -1,13 +1,14 @@
 import style from "./style.module.sass";
-import { Column } from "./types.ts";
+import { Column, Row } from "./types.ts";
 import { getShownCols, getSortIcon } from "./utils.tsx";
 import classNames from "classnames";
 import ManageColsBtn from "components/Table/ManageColsBtn.tsx";
 
 interface Props<T> {
   columns: Column<T>[];
-  data: T[];
-  onSelectRow?: (row: T) => void;
+  data: Row<T>[];
+  onSelectRow?: (row: Row<T>) => void;
+  selectedRow?: Row<T>;
   onSortChange?: (column: Column<T>) => void;
   onColumnToggle?: (column: Column<T>) => void;
 }
@@ -16,6 +17,7 @@ const Table = <T,>({
   columns,
   data,
   onSelectRow,
+  selectedRow,
   onSortChange,
   onColumnToggle,
 }: Props<T>) => {
@@ -49,11 +51,12 @@ const Table = <T,>({
         </tr>
       </thead>
       <tbody>
-        {data.map((row, idx) => (
+        {data.map((row) => (
           <tr
-            // key={typeof row.id === "string" ? row.id : idx}
-            key={idx}
-            className={style.row}
+            key={row.id}
+            className={classNames(style.row, {
+              [style.isSelected]: selectedRow?.id === row.id,
+            })}
             onClick={() => onSelectRow?.(row)}
           >
             {getShownCols(columns).map((column) => (
