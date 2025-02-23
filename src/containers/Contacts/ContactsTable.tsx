@@ -91,10 +91,19 @@ const ContactsTable = () => {
   };
 
   const onColumnToggle = (column: Column<Contact>) => {
+    if (sort?.columnId === column.id && !column.isHidden) {
+      resetRows();
+      setSort(null);
+    }
+
     setColumns((prevState) => {
       return prevState.map((c) => {
         if (c.id === column.id) {
-          return { ...c, isHidden: !c.isHidden };
+          return {
+            ...c,
+            isHidden: !c.isHidden,
+            sortOrder: !c.isHidden ? undefined : c.sortOrder,
+          };
         }
 
         return c;
