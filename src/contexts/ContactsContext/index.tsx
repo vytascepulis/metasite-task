@@ -35,6 +35,7 @@ export const ContactsProvider = ({ children }: Props) => {
 
   const contextState: ContactsContextInterface = {
     rows: state.rows,
+    defaultRows: jsonData.data,
     selectedRow: state.selectedRow,
     onSelectRow,
     updateRows,

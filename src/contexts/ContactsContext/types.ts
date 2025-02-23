@@ -10,6 +10,7 @@ export interface Contact {
 
 export interface ContactsContextInterface {
   rows: Contact[];
+  defaultRows: Contact[];
   selectedRow?: Contact;
   onSelectRow: (row?: Contact) => void;
   updateRows: (rows: Contact[]) => void;

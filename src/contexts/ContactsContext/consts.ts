@@ -3,6 +3,7 @@ import { createContext, useContext } from "react";
 
 export const initialContextValue: ContactsContextInterface = {
   rows: [],
+  defaultRows: [],
   selectedRow: undefined,
   onSelectRow: () => {},
   updateRows: () => {},
