@@ -1,10 +1,10 @@
-import "./style.sass";
+import style from "./style.module.sass";
 
 const Header = () => {
   return (
-    <div className="header">
-      <div className="inner">
-        <a className="link" href="/">
+    <div className={style.header}>
+      <div className={style.inner}>
+        <a className={style.link} href="/">
           CONTACTIFY
         </a>
       </div>

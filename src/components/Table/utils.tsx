@@ -1,11 +1,11 @@
-import { Column, ColumnData, Row, SortOptions } from "./types.ts";
+import { Column, SortOptions } from "./types.ts";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const getNextSortOptions = (
-  column: Column,
-  currentSort: SortOptions,
-): SortOptions => {
+export const getNextSortOptions = <T,>(
+  column: Column<T>,
+  currentSort: SortOptions<T> | null,
+): SortOptions<T> | null => {
   if (currentSort?.columnId !== column.id) {
     return {
       columnId: column.id,
@@ -24,23 +24,24 @@ export const getNextSortOptions = (
   }
 };
 
-export const getSortIcon = (sortOptions: NonNullable<SortOptions>) => {
-  switch (sortOptions.sort) {
+export const getSortIcon = <T,>(sortOptions: SortOptions<T> | null) => {
+  switch (sortOptions?.sort) {
     case "desc":
       return <FontAwesomeIcon icon={faArrowDown} />;
     case "asc":
       return <FontAwesomeIcon icon={faArrowUp} />;
+    default:
+      return null;
   }
 };
 
-export const getCellValue = (row: Row, column: Column): React.ReactNode => {
+export const getCellValue = <T,>(
+  row: T,
+  column: Column<T>,
+): React.ReactNode => {
   return column.render ? column.render(row) : row[column.id];
 };
 
-export const initColumnsData = (columns: Column[]): ColumnData[] => {
-  return columns.map((col) => ({ ...col, isHidden: false }));
-};
-
-export const getShownCols = (columns: ColumnData[]) => {
+export const getShownCols = <T,>(columns: Column<T>[]) => {
   return [...columns].filter((col) => !col.isHidden);
 };

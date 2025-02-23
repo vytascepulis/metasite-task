@@ -1,11 +1,11 @@
 import style from "./style.module.sass";
-import Input from "../../components/Input";
-import Select from "../../components/Select";
-import jsonData from "../Contacts/data.json";
-import Checkbox from "../../components/Checkbox";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Button from "../../components/Button";
+import jsonData from "contexts/ContactsContext/data.json";
+import Input from "components/Input";
+import Select from "components/Select";
+import Checkbox from "components/Checkbox";
+import Button from "components/Button";
 
 const FilterBar = () => {
   const cities = Array.from(new Set(jsonData.data.map((d) => d.city)));

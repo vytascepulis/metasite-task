@@ -3,16 +3,16 @@ import style from "./style.module.sass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
-import { Column, ColumnData } from "./types.ts";
-import useClickOutside from "../../hooks/useClickOutside.ts";
-import Checkbox from "../Checkbox";
+import { Column } from "./types.ts";
+import useClickOutside from "hooks/useClickOutside.ts";
+import Checkbox from "components/Checkbox";
 
-interface Props {
-  columnsData: ColumnData[];
-  setColumnsData: React.Dispatch<React.SetStateAction<ColumnData[]>>;
+interface Props<T> {
+  columnsData: Column<T>[];
+  setColumnsData: React.Dispatch<React.SetStateAction<Column<T>[]>>;
 }
 
-const ManageColsBtn = ({ columnsData, setColumnsData }: Props) => {
+const ManageColsBtn = <T,>({ columnsData, setColumnsData }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const refManageColsWrapper = useRef<HTMLTableHeaderCellElement | null>(null);
@@ -26,7 +26,7 @@ const ManageColsBtn = ({ columnsData, setColumnsData }: Props) => {
 
   const hideableCols = columnsData.filter((col) => col.isHideable);
 
-  const toggleColVisibility = (column: Column) => {
+  const toggleColVisibility = <T,>(column: Column<T>) => {
     setColumnsData((prevState) =>
       prevState.map((col) => {
         if (col.id === column.id) {

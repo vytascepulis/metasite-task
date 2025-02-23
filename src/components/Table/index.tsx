@@ -1,31 +1,31 @@
 import style from "./style.module.sass";
-import { Column, ColumnData, Row, SortOptions } from "./types.ts";
+import { Column, SortOptions } from "./types.ts";
 import { useEffect, useState } from "react";
 import {
   getCellValue,
   getNextSortOptions,
   getShownCols,
   getSortIcon,
-  initColumnsData,
 } from "./utils.tsx";
 import classNames from "classnames";
 import ManageColsBtn from "./ManageColsBtn.tsx";
 
-interface Props {
-  columns: Column[];
-  data: Row[];
+interface Props<T> {
+  columns: Column<T>[];
+  data: T[];
+  onSelectRow?: (row: T) => void;
+  initialSort: SortOptions<T> | null;
+  onSortChange?: (sort: SortOptions<T>) => void;
 }
 
-const Table = ({ columns, data }: Props) => {
+const Table = <T,>({ columns, data, onSelectRow, initialSort }: Props<T>) => {
   const [tableData, setTableData] = useState(data);
-  const [columnsData, setColumnsData] = useState<ColumnData[]>(
-    initColumnsData(columns),
-  );
-  const [sort, setSort] = useState<SortOptions>(null);
+  const [columnsData, setColumnsData] = useState<Column<T>[]>(columns);
+  const [sort, setSort] = useState<SortOptions<T> | null>(initialSort);
 
   const isHideableCols = Boolean(columns.find((c) => c.isHideable));
 
-  const handleSort = (column: Column) => {
+  const handleSort = (column: Column<T>) => {
     let copiedData = [...tableData];
     const currentSort = getNextSortOptions(column, sort);
 
@@ -35,7 +35,7 @@ const Table = ({ columns, data }: Props) => {
 
     if (currentSort?.sort === "desc") {
       copiedData.sort((a, b) =>
-        getCellValue(a, column)! < getCellValue(b, column)! ? -1 : 1,
+        getCellValue<T>(a, column)! < getCellValue(b, column)! ? -1 : 1,
       );
     }
 
@@ -84,8 +84,12 @@ const Table = ({ columns, data }: Props) => {
         </tr>
       </thead>
       <tbody>
-        {tableData.map((row) => (
-          <tr key={row.id} className={style.row}>
+        {tableData.map((row, idx) => (
+          <tr
+            key={typeof row.id === "string" ? row.id : idx}
+            className={style.row}
+            onClick={() => onSelectRow?.(row)}
+          >
             {getShownCols(columnsData).map((column) => (
               <td key={column.id} className={style.cell} style={column.style}>
                 {column.render?.(row) ?? row[column.id]}

@@ -1,5 +1,5 @@
-import Header from "../Header";
-import Contacts from "../Contacts";
+import Header from "containers/Header";
+import Contacts from "containers/Contacts";
 
 const App = () => {
   return (

@@ -1,15 +1,16 @@
 import style from "./style.module.sass";
-import jsonData from "../../containers/Contacts/data.json";
 import { mockContactImage } from "./utils.ts";
+import { useContacts } from "contexts/ContactsContext";
 
-interface Props {
-  contactId: string;
-}
+const ContactInfo = () => {
+  const { selectedRow, rows } = useContacts();
 
-const ContactInfo = ({ contactId }: Props) => {
-  const person = jsonData.data.find((c) => c.id === contactId);
+  const person = rows.find((c) => c.id === selectedRow?.id);
+  const formattedPerson = mockContactImage(person);
 
-  const formattedPerson = mockContactImage(person!);
+  if (!formattedPerson) {
+    return null;
+  }
 
   return (
     <div className={style.contactInfoWrapper}>

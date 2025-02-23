@@ -4,7 +4,7 @@ import style from "./style.module.sass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faXmark } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
-import useClickOutside from "../../hooks/useClickOutside.ts";
+import useClickOutside from "hooks/useClickOutside.ts";
 
 interface Props {
   label: string;

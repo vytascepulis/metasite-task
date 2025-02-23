@@ -1,21 +1,14 @@
-export interface Column {
+export interface Column<T> {
   id: string;
   label: React.ReactNode;
   isSortable?: boolean;
   isHideable?: boolean;
-  render?: (data: Row) => React.ReactNode;
+  isHidden?: boolean;
+  render?: (data: T) => React.ReactNode;
   style?: React.CSSProperties;
 }
 
-export interface ColumnData extends Column {
-  isHidden: boolean;
-}
-
-export interface Row {
-  [key: string]: string | boolean;
-}
-
-export type SortOptions = {
-  columnId: Column["id"];
+export type SortOptions<T> = {
+  columnId: Column<T>["id"];
   sort: "asc" | "desc";
-} | null;
+};
