@@ -15,4 +15,5 @@ export interface ContactsContextInterface {
   onSelectRow: (row?: Contact) => void;
   updateRows: (rows: Contact[]) => void;
   resetRows: () => void;
+  isDataLoading: boolean;
 }

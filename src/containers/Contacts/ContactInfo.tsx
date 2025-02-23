@@ -3,15 +3,35 @@ import { mockContactImage } from "./utils.ts";
 import { useContacts } from "contexts/ContactsContext/consts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { Contact } from "contexts/ContactsContext/types.ts";
+import useFetch from "hooks/useFetch.ts";
+import { FormattedContact } from "containers/Contacts/types.ts";
 
 const ContactInfo = () => {
-  const { selectedRow, rows, onSelectRow } = useContacts();
+  const { selectedRow, onSelectRow } = useContacts();
+  const { handleFetch, isLoading } = useFetch<Contact>({ withCache: true });
+  const [contact, setContact] = useState<FormattedContact | null>(null);
 
-  const person = rows.find((c) => c.id === selectedRow?.id);
-  const formattedPerson = mockContactImage(person);
+  useEffect(() => {
+    if (selectedRow) {
+      handleFetch({
+        endpoint: `/contacts/${selectedRow?.id}`,
+        onUpdate: (data) => {
+          const formattedContact = mockContactImage(data);
+          setContact(formattedContact);
+        },
+        onError: (error) => console.error(error),
+      });
+    }
+  }, [selectedRow]);
 
-  if (!formattedPerson) {
+  if (!contact) {
     return null;
+  }
+
+  if (isLoading) {
+    return <div className={style.contactInfoWrapper}>alo</div>;
   }
 
   return (
@@ -20,36 +40,34 @@ const ContactInfo = () => {
         <FontAwesomeIcon icon={faXmark} />
       </button>
       <div className={style.pictureWrapper}>
-        <img src={formattedPerson.image} alt={formattedPerson.fullName} />
+        <img src={contact.image} alt={contact.fullName} />
       </div>
-      <div className={style.nameWrapper}>{formattedPerson.fullName}</div>
+      <div className={style.nameWrapper}>{contact.fullName}</div>
       <div className={style.detailsWrapper}>
-        {formattedPerson.name && (
+        {contact.name && (
           <>
             <span>Name:</span>
-            <span>{formattedPerson.fullName}</span>
+            <span>{contact.fullName}</span>
           </>
         )}
-        {formattedPerson.city && (
+        {contact.city && (
           <>
             <span>City:</span>
-            <span>{formattedPerson.city}</span>
+            <span>{contact.city}</span>
           </>
         )}
-        {formattedPerson.email && (
+        {contact.email && (
           <>
             <span>Email:</span>
             <span>
-              <a href={`mailto:${formattedPerson.email}`}>
-                {formattedPerson.email}
-              </a>
+              <a href={`mailto:${contact.email}`}>{contact.email}</a>
             </span>
           </>
         )}
-        {formattedPerson.phone && (
+        {contact.phone && (
           <>
             <span>Phone:</span>
-            <span>{formattedPerson.phone}</span>
+            <span>{contact.phone}</span>
           </>
         )}
       </div>

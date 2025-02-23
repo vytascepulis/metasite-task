@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Contact, ContactsContextInterface } from "./types.ts";
 import { ContactsContext } from "./consts.ts";
-import jsonData from "./data.json";
+import useFetch from "hooks/useFetch.ts";
 
 interface Props {
   children: React.ReactNode;
@@ -14,12 +14,13 @@ interface State {
 
 export const ContactsProvider = ({ children }: Props) => {
   const [state, setState] = useState<State>({
-    rows: jsonData.data,
-    // rows: [],
+    rows: [],
     selectedRow: undefined,
   });
 
-  const refRows = useRef<Contact[]>(jsonData.data);
+  const { handleFetch, isLoading } = useFetch<Contact[]>();
+
+  const refRows = useRef<Contact[]>([]);
 
   const onSelectRow = (selectedRow?: Contact) => {
     setState((prevState) => ({ ...prevState, selectedRow }));
@@ -35,12 +36,24 @@ export const ContactsProvider = ({ children }: Props) => {
 
   const contextState: ContactsContextInterface = {
     rows: state.rows,
-    defaultRows: jsonData.data,
+    defaultRows: refRows.current,
     selectedRow: state.selectedRow,
     onSelectRow,
     updateRows,
     resetRows,
+    isDataLoading: isLoading,
   };
+
+  useEffect(() => {
+    handleFetch({
+      endpoint: "/contacts",
+      onUpdate: (data) => {
+        updateRows(data);
+        refRows.current = data;
+      },
+      onError: (error) => console.error(error),
+    });
+  }, []);
 
   return (
     <ContactsContext.Provider value={contextState}>

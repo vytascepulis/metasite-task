@@ -24,6 +24,8 @@ const Table = <T,>({
   onSortChange,
   onColumnToggle,
 }: Props<T>) => {
+  const isHideableCols = Boolean(columns.find((c) => c.isHideable));
+
   return (
     <table className={style.tableWrapper}>
       <thead>
@@ -76,6 +78,7 @@ const Table = <T,>({
                   {column.render?.(row)}
                 </td>
               ))}
+              {isHideableCols && <td></td>}
             </tr>
           ))}
         </tbody>

@@ -4,7 +4,7 @@ import "./main.module.sass";
 import App from "./containers/App";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+  // <StrictMode>
+  <App />,
+  // </StrictMode>,
 );

@@ -1,10 +1,8 @@
 import { Contact } from "contexts/ContactsContext/types.ts";
 import { Column } from "components/Table/types.ts";
-import { SortOptions } from "containers/Contacts/types.ts";
+import { FormattedContact, SortOptions } from "containers/Contacts/types.ts";
 
-export const mockContactImage = (contact?: Contact) => {
-  if (!contact) return null;
-
+export const mockContactImage = (contact: Contact): FormattedContact => {
   return {
     ...contact,
     image: "/public/userpic.png",

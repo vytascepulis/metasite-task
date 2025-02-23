@@ -8,6 +8,7 @@ export const initialContextValue: ContactsContextInterface = {
   onSelectRow: () => {},
   updateRows: () => {},
   resetRows: () => {},
+  isDataLoading: true,
 };
 
 export const ContactsContext =

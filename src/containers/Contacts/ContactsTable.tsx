@@ -51,8 +51,14 @@ const initialColumns: Column<Contact>[] = [
 ];
 
 const ContactsTable = () => {
-  const { rows, onSelectRow, updateRows, resetRows, selectedRow } =
-    useContacts();
+  const {
+    rows,
+    onSelectRow,
+    updateRows,
+    resetRows,
+    selectedRow,
+    isDataLoading,
+  } = useContacts();
 
   const [sort, setSort] = useState<SortOptions | null>(null);
   const [columns, setColumns] = useState<Column<Contact>[]>(initialColumns);
@@ -120,6 +126,7 @@ const ContactsTable = () => {
       selectedRow={selectedRow}
       onSortChange={onSortChange}
       onColumnToggle={onColumnToggle}
+      isDataLoading={isDataLoading}
     />
   );
 };
