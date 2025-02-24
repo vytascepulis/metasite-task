@@ -5,17 +5,21 @@ import Input from "components/Input";
 import Select from "components/Select";
 import Checkbox from "components/Checkbox";
 import Button from "components/Button";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useContacts } from "contexts/ContactsContext/consts.ts";
 import { Filters } from "contexts/ContactsContext/types.ts";
-import { updateHashValues } from "contexts/ContactsContext/utils.ts";
+import {
+  getHashValues,
+  updateHashValues,
+} from "contexts/ContactsContext/utils.ts";
 
 const FilterBar = () => {
-  const { updateRows, defaultRows } = useContacts();
+  const { updateRows, defaultRows, rows } = useContacts();
+
+  const refIsHashInit = useRef(false);
 
   const cities = Array.from(new Set(defaultRows.map((d) => d.city)));
-
-  const data = cities.map((c) => ({
+  const citiesOptions = cities.map((c) => ({
     label: c,
     value: c.toLowerCase(),
   }));
@@ -58,14 +62,38 @@ const FilterBar = () => {
     updateRows(copiedRows);
   };
 
+  const initialSelection = citiesOptions.find(
+    (option) => option.value === getHashValues().filterCity,
+  );
+
+  useEffect(() => {
+    if (!refIsHashInit.current && rows.length) {
+      const hashValues = getHashValues();
+
+      filters.current = {
+        city: hashValues.filterCity || "",
+        name: hashValues.filterName || "",
+        showActive: hashValues.filterShowActive ?? false,
+      };
+
+      handleFilter();
+      refIsHashInit.current = true;
+    }
+  }, [rows]);
+
   return (
     <div className={style.filterBarWrapper}>
       <div className={style.inner}>
-        <Input label="Name" onChange={(val) => handleOnChange("name", val)} />
+        <Input
+          label="Name"
+          onChange={(val) => handleOnChange("name", val)}
+          initialValue={getHashValues().filterName}
+        />
         <Select
           label="City"
-          options={data}
+          options={citiesOptions}
           onSelect={(val) => handleOnChange("city", val?.value || "")}
+          initialSelection={initialSelection}
         />
         <Checkbox
           name="showActive"
@@ -75,7 +103,7 @@ const FilterBar = () => {
             </span>
           }
           onChecked={(val) => handleOnChange("showActive", val)}
-          initialValue={filters.current.showActive}
+          initialValue={Boolean(getHashValues().filterShowActive)}
         />
         <Button className={style.filterButton} onClick={handleFilter}>
           Filter

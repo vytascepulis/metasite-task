@@ -165,6 +165,11 @@ const ContactsTable = () => {
         );
       }
 
+      if (hashValues.selectedRowId) {
+        const selectedRow = rows.find((r) => r.id === hashValues.selectedRowId);
+        onSelectRow(selectedRow);
+      }
+
       if (hashValues.sortColumnId && hashValues.sortOrder) {
         setSort({
           columnId: hashValues.sortColumnId,

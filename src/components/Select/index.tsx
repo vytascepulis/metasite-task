@@ -1,5 +1,5 @@
 import { Option } from "./types.ts";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import style from "./style.module.sass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -10,14 +10,16 @@ interface Props {
   label: string;
   options: Option[];
   onSelect: (value: Option | null) => void;
+  initialSelection?: Option;
 }
 
-const Select = ({ label, options, onSelect }: Props) => {
-  const [value, setValue] = useState<Option | null>(null);
+const Select = ({ label, options, onSelect, initialSelection }: Props) => {
+  const [value, setValue] = useState<Option | null>(initialSelection || null);
   const [isOpen, setIsOpen] = useState(false);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(initialSelection?.label || "");
 
   const refSelectWrapper = useRef<HTMLDivElement | null>(null);
+  const refIsInitialSelectionInit = useRef(false);
 
   const onClickOutside = () => {
     setIsOpen(false);
@@ -58,6 +60,15 @@ const Select = ({ label, options, onSelect }: Props) => {
   const filteredOptions = options.filter((o) =>
     o.label.toLowerCase().startsWith(text.toLowerCase()),
   );
+
+  useEffect(() => {
+    if (!refIsInitialSelectionInit.current && initialSelection) {
+      setValue(initialSelection);
+      setText(initialSelection.label);
+
+      refIsInitialSelectionInit.current = true;
+    }
+  }, [initialSelection]);
 
   return (
     <div className={style.selectWrapper} ref={refSelectWrapper}>

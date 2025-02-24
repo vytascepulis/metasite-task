@@ -7,10 +7,11 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 interface Props {
   label: string;
   onChange: (value: string) => void;
+  initialValue?: string;
 }
 
-const Input = ({ label, onChange }: Props) => {
-  const [value, setValue] = useState("");
+const Input = ({ label, onChange, initialValue }: Props) => {
+  const [value, setValue] = useState(initialValue || "");
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const val = event.target.value;
