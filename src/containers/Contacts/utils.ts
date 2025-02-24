@@ -21,21 +21,4 @@ export const getNextSortOptions = (
     columnId: column.id,
     order: !column.sortOrder ? "desc" : "asc",
   };
-
-  // if (currentSort?.columnId !== column.id) {
-  //   return {
-  //     columnId: column.id,
-  //     order: "desc",
-  //   };
-  // }
-  //
-  // switch (currentSort.order) {
-  //   case "desc":
-  //     return {
-  //       ...currentSort,
-  //       order: "asc",
-  //     };
-  //   case "asc":
-  //     return null;
-  // }
 };
