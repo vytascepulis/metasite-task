@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Contact, ContactsContextInterface } from "./types.ts";
 import { ContactsContext } from "./consts.ts";
 import useFetch from "hooks/useFetch.ts";
+import { updateHashValues } from "contexts/ContactsContext/utils.ts";
 
 interface Props {
   children: React.ReactNode;
@@ -24,6 +25,7 @@ export const ContactsProvider = ({ children }: Props) => {
 
   const onSelectRow = (selectedRow?: Contact) => {
     setState((prevState) => ({ ...prevState, selectedRow }));
+    updateHashValues({ selectedRowId: selectedRow?.id });
   };
 
   const updateRows = (rows: Contact[]) => {

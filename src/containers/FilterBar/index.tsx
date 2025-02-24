@@ -7,12 +7,8 @@ import Checkbox from "components/Checkbox";
 import Button from "components/Button";
 import { useRef } from "react";
 import { useContacts } from "contexts/ContactsContext/consts.ts";
-
-interface Filters {
-  name: string;
-  city: string;
-  showActive: boolean;
-}
+import { Filters } from "contexts/ContactsContext/types.ts";
+import { updateHashValues } from "contexts/ContactsContext/utils.ts";
 
 const FilterBar = () => {
   const { updateRows, defaultRows } = useContacts();
@@ -36,6 +32,12 @@ const FilterBar = () => {
 
   const handleFilter = () => {
     let copiedRows = [...defaultRows];
+
+    updateHashValues({
+      filterCity: filters.current.city,
+      filterName: filters.current.name,
+      filterShowActive: !filters.current.showActive ? undefined : true,
+    });
 
     if (filters.current.city) {
       copiedRows = copiedRows.filter((r) =>

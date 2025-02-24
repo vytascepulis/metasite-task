@@ -3,10 +3,13 @@ import { Column } from "components/Table/types.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { useContacts } from "contexts/ContactsContext/consts";
-import { Contact } from "contexts/ContactsContext/types.ts";
-import { useState } from "react";
-import { SortOptions } from "containers/Contacts/types.ts";
+import { Contact, SortOptions } from "contexts/ContactsContext/types.ts";
+import { useEffect, useRef, useState } from "react";
 import { getNextSortOptions } from "containers/Contacts/utils.ts";
+import {
+  getHashValues,
+  updateHashValues,
+} from "contexts/ContactsContext/utils.ts";
 
 const initialColumns: Column<Contact>[] = [
   {
@@ -63,38 +66,58 @@ const ContactsTable = () => {
   const [sort, setSort] = useState<SortOptions | null>(null);
   const [columns, setColumns] = useState<Column<Contact>[]>(initialColumns);
 
-  const onSortChange = (column: Column<Contact>) => {
-    const nextSort = getNextSortOptions(column, sort);
-    setSort(nextSort);
+  const refIsHashInit = useRef(false);
 
-    setColumns((prevState) => {
-      return prevState.map((c) => {
-        const sortOrder =
-          c.id === nextSort?.columnId ? nextSort.order : undefined;
-        return { ...c, sortOrder };
-      });
-    });
-
-    if (!nextSort) {
-      resetRows();
-      return;
-    }
-
+  const handleSortRows = (sortOptions: SortOptions) => {
     const copiedRows = [...rows];
+    const column = columns.find((c) => c.id === sortOptions.columnId);
 
-    if (nextSort.order === "desc") {
+    if (!column) return;
+
+    if (sortOptions.order === "desc") {
       copiedRows.sort((a, b) =>
         column.render(a)! < column.render(b)! ? -1 : 1,
       );
     }
 
-    if (nextSort.order === "asc") {
+    if (sortOptions.order === "asc") {
       copiedRows.sort((a, b) =>
         column.render(a)! > column.render(b)! ? -1 : 1,
       );
     }
 
     updateRows(copiedRows);
+
+    setColumns((prevState) => {
+      return prevState.map((c) => {
+        const sortOrder =
+          c.id === sortOptions.columnId ? sortOptions.order : undefined;
+        return { ...c, sortOrder };
+      });
+    });
+  };
+
+  const onSortChange = (column: Column<Contact>) => {
+    const nextSort = getNextSortOptions(column, sort);
+    setSort(nextSort);
+
+    updateHashValues({
+      sortColumnId: nextSort?.columnId,
+      sortOrder: nextSort?.order,
+    });
+
+    if (!nextSort) {
+      resetRows();
+      setColumns((prevState) => {
+        return prevState.map((c) => ({
+          ...c,
+          sortOrder: undefined,
+        }));
+      });
+      return;
+    }
+
+    handleSortRows(nextSort);
   };
 
   const onColumnToggle = (column: Column<Contact>) => {
@@ -104,7 +127,7 @@ const ContactsTable = () => {
     }
 
     setColumns((prevState) => {
-      return prevState.map((c) => {
+      const newState = prevState.map((c) => {
         if (c.id === column.id) {
           return {
             ...c,
@@ -115,8 +138,48 @@ const ContactsTable = () => {
 
         return c;
       });
+
+      const hiddenCols = newState.filter((c) => c.isHidden).map((c) => c.id);
+
+      updateHashValues({
+        hiddenColumnIds: hiddenCols,
+      });
+
+      return newState;
     });
   };
+
+  useEffect(() => {
+    const hashValues = getHashValues();
+
+    if (!refIsHashInit.current && rows.length) {
+      if (hashValues.hiddenColumnIds?.length) {
+        setColumns((prevState) =>
+          prevState.map((c) => {
+            if (hashValues.hiddenColumnIds?.includes(c.id)) {
+              return { ...c, isHidden: true };
+            }
+
+            return c;
+          }),
+        );
+      }
+
+      if (hashValues.sortColumnId && hashValues.sortOrder) {
+        setSort({
+          columnId: hashValues.sortColumnId,
+          order: hashValues.sortOrder,
+        });
+
+        handleSortRows({
+          order: hashValues.sortOrder,
+          columnId: hashValues.sortColumnId,
+        });
+      }
+
+      refIsHashInit.current = true;
+    }
+  }, [rows]);
 
   return (
     <Table
