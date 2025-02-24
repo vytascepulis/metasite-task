@@ -141,7 +141,17 @@ const ContactsTable = () => {
 
       const hiddenCols = newState.filter((c) => c.isHidden).map((c) => c.id);
 
+      const { sortColumnId } = getHashValues();
+      const isSortedHidden = Boolean(
+        sortColumnId && hiddenCols.includes(sortColumnId),
+      );
+
+      const sortOptions = isSortedHidden
+        ? { sortColumnId: undefined, sortOrder: undefined }
+        : {};
+
       updateHashValues({
+        ...sortOptions,
         hiddenColumnIds: hiddenCols,
       });
 
