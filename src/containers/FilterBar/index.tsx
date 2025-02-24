@@ -5,8 +5,8 @@ import Input from "components/Input";
 import Select from "components/Select";
 import Checkbox from "components/Checkbox";
 import Button from "components/Button";
-import { useEffect, useRef } from "react";
-import { useContacts } from "contexts/ContactsContext/consts.ts";
+import { useRef } from "react";
+import { useContacts } from "contexts/ContactsContext/consts.tsx";
 import { Filters } from "contexts/ContactsContext/types.ts";
 import {
   getHashValues,
@@ -14,9 +14,7 @@ import {
 } from "contexts/ContactsContext/utils.ts";
 
 const FilterBar = () => {
-  const { updateRows, defaultRows, rows } = useContacts();
-
-  const refIsHashInit = useRef(false);
+  const { updateRows, defaultRows } = useContacts();
 
   const cities = Array.from(new Set(defaultRows.map((d) => d.city)));
   const citiesOptions = cities.map((c) => ({
@@ -24,10 +22,11 @@ const FilterBar = () => {
     value: c.toLowerCase(),
   }));
 
+  const { filterCity, filterName, filterShowActive } = getHashValues();
   const filters = useRef<Filters>({
-    city: "",
-    name: "",
-    showActive: false,
+    city: filterCity || "",
+    name: filterName || "",
+    showActive: Boolean(filterShowActive),
   });
 
   const handleOnChange = (key: keyof Filters, value: string | boolean) => {
@@ -35,51 +34,18 @@ const FilterBar = () => {
   };
 
   const handleFilter = () => {
-    let copiedRows = [...defaultRows];
-
     updateHashValues({
       filterCity: filters.current.city,
       filterName: filters.current.name,
       filterShowActive: !filters.current.showActive ? undefined : true,
     });
 
-    if (filters.current.city) {
-      copiedRows = copiedRows.filter((r) =>
-        r.city.toLowerCase().startsWith(filters.current.city),
-      );
-    }
-
-    if (filters.current.name) {
-      copiedRows = copiedRows.filter((r) =>
-        r.name.toLowerCase().startsWith(filters.current.name),
-      );
-    }
-
-    if (filters.current.showActive) {
-      copiedRows = copiedRows.filter((r) => r.isActive);
-    }
-
-    updateRows(copiedRows);
+    updateRows();
   };
 
   const initialSelection = citiesOptions.find(
     (option) => option.value === getHashValues().filterCity,
   );
-
-  useEffect(() => {
-    if (!refIsHashInit.current && rows.length) {
-      const hashValues = getHashValues();
-
-      filters.current = {
-        city: hashValues.filterCity || "",
-        name: hashValues.filterName || "",
-        showActive: hashValues.filterShowActive ?? false,
-      };
-
-      handleFilter();
-      refIsHashInit.current = true;
-    }
-  }, [rows]);
 
   return (
     <div className={style.filterBarWrapper}>

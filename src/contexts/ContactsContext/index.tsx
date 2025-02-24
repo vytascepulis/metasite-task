@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Contact, ContactsContextInterface } from "./types.ts";
-import { ContactsContext } from "./consts.ts";
+import { ContactsContext, initialColumns } from "./consts.tsx";
 import useFetch from "hooks/useFetch.ts";
-import { updateHashValues } from "contexts/ContactsContext/utils.ts";
+import {
+  formatDataByHash,
+  getHashValues,
+  updateHashValues,
+} from "contexts/ContactsContext/utils.ts";
+import { Column } from "components/Table/types.ts";
 
 interface Props {
   children: React.ReactNode;
@@ -10,12 +15,14 @@ interface Props {
 
 interface State {
   rows: Contact[];
+  columns: Column<Contact>[];
   selectedRow?: Contact;
 }
 
 export const ContactsProvider = ({ children }: Props) => {
   const [state, setState] = useState<State>({
     rows: [],
+    columns: initialColumns,
     selectedRow: undefined,
   });
 
@@ -28,21 +35,22 @@ export const ContactsProvider = ({ children }: Props) => {
     updateHashValues({ selectedRowId: selectedRow?.id });
   };
 
-  const updateRows = (rows: Contact[]) => {
-    setState((prevState) => ({ ...prevState, rows }));
-  };
+  const updateRows = (rows?: Contact[]) => {
+    const { data, columns } = formatDataByHash(
+      rows || refRows.current,
+      state.columns,
+    );
 
-  const resetRows = () => {
-    setState((prevState) => ({ ...prevState, rows: refRows.current }));
+    setState((prevState) => ({ ...prevState, rows: data, columns }));
   };
 
   const contextState: ContactsContextInterface = {
     rows: state.rows,
+    columns: state.columns,
     defaultRows: refRows.current,
     selectedRow: state.selectedRow,
     onSelectRow,
     updateRows,
-    resetRows,
     isDataLoading: isLoading,
   };
 
@@ -52,6 +60,12 @@ export const ContactsProvider = ({ children }: Props) => {
       onUpdate: (data) => {
         updateRows(data);
         refRows.current = data;
+
+        const foundRow = data.find(
+          (d) => d.id === getHashValues().selectedRowId,
+        );
+
+        setState((prevState) => ({ ...prevState, selectedRow: foundRow }));
       },
       onError: (error) => console.error(error),
     });

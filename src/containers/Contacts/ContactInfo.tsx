@@ -1,6 +1,6 @@
 import style from "./style.module.sass";
 import { mockContactImage } from "./utils.ts";
-import { useContacts } from "contexts/ContactsContext/consts";
+import { useContacts } from "contexts/ContactsContext/consts.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";

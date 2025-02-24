@@ -33,10 +33,10 @@ export type HashOptions = Partial<{
 
 export interface ContactsContextInterface {
   rows: Contact[];
+  columns: Column<Contact>[];
   defaultRows: Contact[];
   selectedRow?: Contact;
   onSelectRow: (row?: Contact) => void;
-  updateRows: (rows: Contact[]) => void;
-  resetRows: () => void;
+  updateRows: (rows?: Contact[]) => void;
   isDataLoading: boolean;
 }
