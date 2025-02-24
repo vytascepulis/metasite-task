@@ -21,3 +21,4 @@ Things to improve:
 - Add responsiveness
 - Move table state from hash to url params with React Router
 - Add stylelint
+- Debounced filtering instead of btn click
