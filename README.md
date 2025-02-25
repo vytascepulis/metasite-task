@@ -22,3 +22,4 @@ Things to improve:
 - Move table state from hash to url params with React Router
 - Add stylelint
 - Debounced filtering instead of btn click
+- <Input and <Select comps labels are done in a hacky way - with background
